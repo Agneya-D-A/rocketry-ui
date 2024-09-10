@@ -1,1 +1,0 @@
-This is a project aimed at the visual representation of sensor data received through an Arduino uno. Using a Node.js server to handle the backend and React to render the frontend. The data is also stored in a local cluster MongoDB database,
