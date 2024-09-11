@@ -6,13 +6,17 @@ import { LinkedList, Node } from './util/LinkedList';
 import io from 'socket.io-client'
 
 function App() {
+  // state variable to store our linked list and the function to update it
   const [linked_list, updateList] = useState(new LinkedList(10));
 
+  // this updates the linked list whenever we receive data from the socket
   useEffect(()=>{
+    // Creates a socket with the address of the Node.js http server
     const socket = io('http://localhost:3001');
+    // specifies what to do when new data is detected
     socket.on('new-data',(new_node)=>{
       updateList(prevList => {
-        // const newList = new LinkedList(10);
+        // copies the old linked list to the new linked list and adds the new node to it
         const node = new Node(new_node)
         const newList = new LinkedList(10);
         newList.head = prevList.head;
