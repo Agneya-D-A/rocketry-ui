@@ -84,7 +84,7 @@ class LinkedList{
     }
 
     refreshPoints(node){
-        if(this.length<=this.limit){
+        if(this.length===this.limit){
             this.removeFromHead();
         }
         this.insertAtTail(node);
