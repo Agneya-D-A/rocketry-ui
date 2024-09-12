@@ -9,7 +9,7 @@ class Node{
         this.Vy = object.Vy;
         this.Vz = object.Vz;
         this.V = this.vectorMagnitude(this.Vx, this.Vy, this.Vz);
-        this.time = new Date();
+        this.time = object.time;
         this.next = null;
     }
 
