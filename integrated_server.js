@@ -1,3 +1,7 @@
+//THIS FILE IS FINAL, ONLY SUBJECT TO CHANGE IN CASE OF ERRORS
+//AFTER SUCCESSFUL TESTING, ONLY THE VARIABLES WOULD BE INCREASED, THE LOGIC WOULD REMAIN THE SAME
+
+
 //This is required for some cross origin request handling. 
 //Request is denied if this isn't present
 const cors = require('cors');
