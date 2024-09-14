@@ -1,4 +1,9 @@
-// import React from 'react';
+//This has the implementation of a linked list as well its node
+//There also is a map function which acts in the exact same way as an array.map method and returns an array
+//But do keep in mind, do not directly pass a callback function which returns JSX to this map function
+//Instead, do this const componentArray = linked_list.map((node) => componentMakerFunction(node))
+//here, the componentMakerFunction should be the function returning a JSX element
+//This can be used to render an array of vertices for the graph and this can be placed inside the Graph body
 
 class Node{
     //This is a node in the linked list
