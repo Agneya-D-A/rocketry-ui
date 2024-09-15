@@ -32,8 +32,8 @@ const io = require('socket.io')(server, {
 //import mongoose for MongoDB operations
 const mongoose = require('mongoose');
 
-//import Point model, a MongoDB schema model
-const Point = require('./src/models/Point');
+//import SensorData model, a MongoDB schema model
+const SensorData = require('./src/models/SensorData');
 
 //function to connect to MongoDB database
 const connectToDatabsase = async () =>{
@@ -98,7 +98,7 @@ const handleSerialData = (serialArray) =>{
     });
 
     //The new point is saved to the database
-    point.save();
+    SensorData.save();
     io.emit('new-data',node);
     console.log(node);
 }
