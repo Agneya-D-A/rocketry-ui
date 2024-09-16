@@ -80,26 +80,43 @@ parser.on('data',(data)=>{
     handleSerialData(serialArray);
 });
 
+//create a reference time
+const executionStartTime = new Date();
 //handle serial data, create a new point on the database and send the node to the frontend.
-const handleSerialData = (serialArray) =>{
+const handleSerialData = () =>{
     const time = new Date();
+    /*
+        The getTime function returns total milliseconds passed since the midnight of Jan 1, 1970 (in sync with unix clock)
+        upto the moment where new Date() was called. We use this to get the difference in milliseconds
+        between the moment we get data and the moment the program execution starts
+    */ 
+    const timeMilliSeconds = time.getTime() - executionStartTime.getTime();
     const node = {
-        Vx: serialArray[0],
-        Vy: serialArray[1],
-        Vz: serialArray[2],
-        time: time
+        velocities: {
+            Vx: serialArray[0],
+            Vy: serialArray[1],
+            Vz: serialArray[2],
+            V: vectorMagnitude(serialArray[0],serialArray[1],serialArray[2]).toFixed(5) //rounds to 5 decimal places
+        },
+        acceleration: {
+            Ax: serialArray[3],
+            Ay: serialArray[4],
+            Az: serialArray[5],
+            A: vectorMagnitude(serialArray[3],serialArray[4],serialArray[5]).toFixed(5)
+        },
+        altitude: serialArray[6],
+        temperature: serialArray[7],
+        timeStamp: time,
+        timeMilliSeconds: timeMilliSeconds
     }
-    const point = new Point({
-        Vx: serialArray[0],
-        Vy: serialArray[1],
-        Vz: serialArray[2],
-        V: vectorMagnitude(serialArray[0],serialArray[1],serialArray[2]),
-        time: time
-    });
 
-    //The new point is saved to the database
-    SensorData.save();
-    io.emit('new-data',node);
+    //create a new databse model object using the node and spreading it
+    const point = new SensorData({ ...node });
+    //save it to the database
+    point.save();
+
+    //emit the data through socket.io to the frontend
+    io.emit('new-data',JSON.stringify(node));
     console.log(node);
 }
 
