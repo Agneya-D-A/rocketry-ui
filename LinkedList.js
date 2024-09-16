@@ -5,16 +5,29 @@
 //here, the componentMakerFunction should be the function returning a JSX element
 //This can be used to render an array of vertices for the graph and this can be placed inside the Graph body
 
+// import React from 'react';
+
 class Node{
     //This is a node in the linked list
     //It has 2 parts. The data part and the attribute next which holds the reference to the next node in the linked list
     constructor(object){
         //This constructor initializes a node by taking in a JSON as the parameter
-        this.Vx = object.Vx;
-        this.Vy = object.Vy;
-        this.Vz = object.Vz;
-        this.V = this.vectorMagnitude(this.Vx, this.Vy, this.Vz);
-        this.time = object.time;
+        this.velocities = {
+            Vx: object.velocities.Vx,
+            Vy: object.velocities.Vy,
+            Vz: object.velocities.Vz,
+            V: object.velocities.V
+        }
+        this.acceleration = {
+            Ax: object.acceleration.Ax,
+            Ay: object.acceleration.Ay,
+            Az: object.acceleration.Az,
+            A: object.acceleration.A
+        }
+        this.altitude = object.altitude;
+        this.temperature = object.temperature;
+        this.timeStamp = object.timeStamp;
+        this.timeMilliSeconds = object.timeMilliSeconds;
         this.next = null;
     }
 
@@ -85,6 +98,7 @@ class LinkedList{
             //to the next node!!!
             currentNode = currentNode.next;
         }
+        // console.log(mappedArray);
         return mappedArray;
     }
 
