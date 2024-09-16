@@ -1,6 +1,11 @@
+//BE CAREFUL IF YOU'RE CHANGING STYLES
+//SOMETIMES IT SHRINKS IN HALF.
+
 import React from 'react';
 import './Graph.css';
 import { Line } from 'react-chartjs-2';
+
+//import chart elements from chart.js
 import {
     Chart as ChartJS,
     LineElement,
@@ -11,11 +16,11 @@ import {
     LinearScale,
     plugins,
     Title,
-    Scale
+    scales
 
 } from 'chart.js';
-import { color } from 'chart.js/helpers';
 
+//register the imported elements with the chart
 ChartJS.register(
     LineElement,
     Legend,
@@ -25,21 +30,28 @@ ChartJS.register(
     LinearScale,
     plugins,
     Title,
-    Scale
+    scales
 )
 
+//Something funny was happening with legend colors. I resorted to set the color I want as default
+ChartJS.defaults.color = '#AAA'; 
+
 export default function Graph({linked_list, purpose}){
+    //data parameter for the Line component
     const data = {
-        labels: linked_list.map((node)=>node.timeMilliSeconds),
+        labels: linked_list.map((node)=>node.timeMilliSeconds), //time in milliseconds on the x-axis
+        //for the dataset, conditional rendering is used. A dataset is selected based on what graph this is
+        //ternary operator is used
         datasets: 
             purpose ==='velocity'? 
                 [
                     {
-                        label: 'Vx (m/s)',
-                        data: linked_list.map((node)=>node.velocities.Vx),
-                        borderColor: 'green',
-                        tension: 0.4,
-                        fill: false
+                        label: 'Vx (m/s)', //label for the legend
+                        data: linked_list.map((node)=>node.velocities.Vx), //array of values (Vx)
+                        borderColor: 'green', //Color of the line as well as point border
+                        tension: 0.4, //For smoother curves
+                        fill: false //If it was true, would have filled color below the line.
+                        //Since we have multiple lines, we don't want that
                     },
                     {
                         label: 'Vy (m/s)',
@@ -118,17 +130,18 @@ export default function Graph({linked_list, purpose}){
     }
 
     const options = {
+        //options parameter for the Line component
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: false, //when the graph is responsive, it acts funny if this isn't set to false
         plugins: {
             legend: true
         },
         scales: {
             x: {
-                title: {
+                title: { //Title in the x - axis
                     display: true,
                     text: 'Time (milliseconds)',
-                    color: '#545454'
+                    color: '#AAAAAA'
 
                 },
                 beginAtZero: true,  // Start the x-axis at 0
@@ -144,6 +157,14 @@ export default function Graph({linked_list, purpose}){
                 },
             },
             y: {
+                title: {
+                    //Blank y axis for reusability of the component. 
+                    //For some reason, doesn't work if I only give a title to the x - axis instead.
+                    //This too is necessary
+                    display: true,
+                    text: ' ',
+                    color: '#FFF'
+                },
                 beginAtZero: true,  // Start the y-axis at 0
                 ticks: {
                     color: 'white', // y-axis tick labels color
@@ -174,3 +195,16 @@ export default function Graph({linked_list, purpose}){
         </div>
     )
 }
+
+/*
+
+Conditional rendering is used here.
+In order to handle the first condirion where we have received no data from the graph,
+we check if the length of the linked list is 0. If it is, the Line component is not rendered
+Since there is no data, it would have thrown an error. This is done to avoid such errors
+Here, && is used for conditional rendering. It is a concept in javascript where, it keeps on checking the values
+one by one. If a value is false, it returns false. Else, it returns the last truthy value,
+in our case, the component we want
+Again a ternary operator is used for the contents of h3
+
+*/
