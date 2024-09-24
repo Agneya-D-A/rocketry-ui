@@ -1,8 +1,21 @@
 //THIS FILE IS FINAL, ONLY SUBJECT TO CHANGE IN CASE OF ERRORS
 //AFTER SUCCESSFUL TESTING, ONLY THE VARIABLES WOULD BE INCREASED, THE LOGIC WOULD REMAIN THE SAME
 
+//Initializing paths and variables. Change these according to your requirements
+const frontendPath = "http://localhost:3000";
+const dbConnectionString = "mongodb://localhost:27017/rocketry-ui";
+const serialPortPath = "COM8/USB/VID_2341&PID_0043/14011";
+const baudRate = 9600;
+/*
+    For windows systems:
+    In order to find the serialPortPath, open the device manager, double click on the port through which
+    the arduino is connected to your computer. Go to the details tab. Select device instance path and copy
+    the line \USB\...
+    Copy that address. Now your serial port path starts with COMport/USB/....
+*/
 
-//This is required for some cross origin request handling. 
+
+//This is required for cross origin request handling. 
 //Request is denied if this isn't present
 const cors = require('cors');
 
@@ -19,7 +32,7 @@ const server = require('http').createServer(app);
 //The cors object takes the url of the frontend app and grants it the below permissions
 const io = require('socket.io')(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: frontendPath,
       methods: ["GET", "POST"],
       allowedHeaders: ['Access-Control-Allow-Origin'],
       credentials: true
@@ -37,7 +50,7 @@ const SensorData = require('./src/models/SensorData');
 
 //function to connect to MongoDB database
 const connectToDatabsase = async () =>{
-  let connection_string = "mongodb://localhost:27017/rocketry-ui"
+  let connection_string = dbConnectionString;
   try {
       await mongoose.connect(connection_string);
       console.log('Connected to MongoDB via Mongoose!');
@@ -53,7 +66,7 @@ connectToDatabsase();
 //Setup serial data reader
 const { SerialPort, ReadlineParser } = require('serialport');
 //edit according to os
-const port = new SerialPort({ path: "COM8/USB/VID_2341&PID_0043/14011", baudRate: 9600 });
+const port = new SerialPort({ path: serialPortPath, baudRate: baudRate });
 const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 
 //To notify when the port has been opened
