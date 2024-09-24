@@ -53,7 +53,7 @@ connectToDatabsase();
 //Setup serial data reader
 const { SerialPort, ReadlineParser } = require('serialport');
 //edit according to os
-const port = new SerialPort({ path: '/dev/tty-usbserial1', baudRate: 9600 });
+const port = new SerialPort({ path: "COM8/USB/VID_2341&PID_0043/14011", baudRate: 9600 });
 const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 
 //To notify when the port has been opened
@@ -83,7 +83,7 @@ parser.on('data',(data)=>{
 //create a reference time
 const executionStartTime = new Date();
 //handle serial data, create a new point on the database and send the node to the frontend.
-const handleSerialData = () =>{
+const handleSerialData = (serialArray) =>{
     const time = new Date();
     /*
         The getTime function returns total milliseconds passed since the midnight of Jan 1, 1970 (in sync with unix clock)
