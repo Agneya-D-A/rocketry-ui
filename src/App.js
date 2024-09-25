@@ -1,14 +1,18 @@
-// import logo from './logo.svg';
+
 import './App.css';
 // import Graph from './graph';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { LinkedList, Node } from './util/LinkedList';
 import io from 'socket.io-client'
 
 import Graph from "./components/Graph";
+import Slider from "./components/Slider";
+
+const ThemeContext = createContext();
 
 const App = () =>{
   const [linked_list, updateList] = useState(new LinkedList(10));
+  const [theme, setTheme] = useState("dark");
 
   useEffect(()=>{
     const socket = io('http://localhost:3001');
@@ -32,31 +36,27 @@ const App = () =>{
   },[linked_list]);
 
   return(
-    <div className='App'>
-      <h1>Live Sensor Data</h1>
-      <div className='graph-container'>
-        <Graph linked_list={linked_list} purpose='velocity'/>
-        <Graph linked_list={linked_list} purpose='acceleration'/>
-        <Graph linked_list={linked_list} purpose='altitude'/>
-        <Graph linked_list={linked_list} purpose='temperature'/>
+    <ThemeContext.Provider value={{theme,setTheme}}>
+      <div className={`App ${theme}`}>
+        <div className='navbar'>
+          <h1 style={{gridColumn: "1/span 2"}}>Live Sensor Data</h1>
+          <div className='slider-container'>
+            <h3 className={`${theme}`}>Light</h3>
+            <Slider/>
+            <h3 className={`${theme}`}>Dark</h3>
+          </div>
+        </div>
+        <div className='graph-container'>
+          <Graph linked_list={linked_list} purpose='velocity'/>
+          <Graph linked_list={linked_list} purpose='acceleration'/>
+          <Graph linked_list={linked_list} purpose='altitude'/>
+          <Graph linked_list={linked_list} purpose='temperature'/>
+        </div>
       </div>
-    </div>
+    </ThemeContext.Provider>
   )
 }
 
 export default App;
 
-{/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+export {ThemeContext};
