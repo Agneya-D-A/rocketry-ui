@@ -1,9 +1,10 @@
 //BE CAREFUL IF YOU'RE CHANGING STYLES
 //SOMETIMES IT SHRINKS IN HALF.
 
-import React from 'react';
+import React, {useContext} from 'react';
 import './Graph.css';
 import { Line } from 'react-chartjs-2';
+import { ThemeContext } from '../App';
 
 //import chart elements from chart.js
 import {
@@ -19,6 +20,7 @@ import {
     scales
 
 } from 'chart.js';
+import { color } from 'chart.js/helpers';
 
 //register the imported elements with the chart
 ChartJS.register(
@@ -37,6 +39,7 @@ ChartJS.register(
 ChartJS.defaults.color = '#AAA'; 
 
 export default function Graph({linked_list, purpose}){
+    const {theme, setTheme} = useContext(ThemeContext);
     //data parameter for the Line component
     const data = {
         labels: linked_list.map((node)=>node.timeMilliSeconds), //time in milliseconds on the x-axis
@@ -134,26 +137,28 @@ export default function Graph({linked_list, purpose}){
         responsive: true,
         maintainAspectRatio: false, //when the graph is responsive, it acts funny if this isn't set to false
         plugins: {
-            legend: true
+            legend: {
+                color: "black"
+            }
         },
         scales: {
             x: {
                 title: { //Title in the x - axis
                     display: true,
                     text: 'Time (milliseconds)',
-                    color: '#AAAAAA'
+                    color: theme=="dark" ? '#AAAAAA' : "#222222"
 
                 },
                 beginAtZero: true,  // Start the x-axis at 0
 
                 ticks: {
-                    color: 'white', // X-axis tick labels color
+                    color: theme=="dark" ? 'white' : 'black', // X-axis tick labels color
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.2)', // X-axis grid line color
+                    color: theme=="dark"? 'rgba(255, 255, 255, 0.2)' : 'rgba(2, 2, 2, 0.2)', // X-axis grid line color
                 },
                 border: {
-                    color: 'white', // X-axis line color
+                    color: theme=="dark" ? 'white' : "light", // X-axis line color
                 },
             },
             y: {
@@ -167,19 +172,19 @@ export default function Graph({linked_list, purpose}){
                 },
                 beginAtZero: true,  // Start the y-axis at 0
                 ticks: {
-                    color: 'white', // y-axis tick labels color
+                    color: theme=="dark" ? 'white' : 'black', // y-axis tick labels color
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.2)', // X-axis grid line color
+                    color: theme=="dark"? 'rgba(255, 255, 255, 0.2)' : 'rgba(2, 2, 2, 0.2)', // X-axis grid line color
                 },
                 border: {
-                    color: 'white', // y-axis line color
+                    color: theme=="dark" ? 'white' : 'black', // y-axis line color
                 },
             }
         }
     }
     return (
-        <div className='graph'>
+        <div className= {`graph ${theme}`}>
             {linked_list.length!==0 
             && [
                 <Line data={data} options={options} ></Line>,
