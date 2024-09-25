@@ -9,8 +9,28 @@
   justify-content: center;
 }
 
-.App h1{
+.dark{
+  background-color: #282c34;
+}
+
+.light{
+  background-color: white;
+}
+
+.dark h1{
   color: white;
+}
+
+.light h1{
+  color: black;
+}
+
+.dark h3{
+  color: white;
+}
+
+.light h3{
+  color: black;
 }
 
 .App-logo {
@@ -48,6 +68,23 @@
   }
 }
 
+.navbar{
+  display: grid;
+  justify-content: space-evenly;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+}
+
+.date-display{
+  color: white;
+}
+
+.button-container{
+  display: flex;
+  justify-content: space-between;
+  gap:30px
+}
+
 .graph-container{
   display: grid;
   grid-template-columns: auto auto;
@@ -55,4 +92,11 @@
   column-gap: 30px;
   row-gap: 30px;
   padding-left: 30px;
+  padding-top: 20px;
+}
+
+.slider-container{
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
