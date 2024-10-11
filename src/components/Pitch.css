@@ -1,0 +1,24 @@
+.coordinate-pitch-circle{
+    height: 200px;
+    width: 200px;
+    border-radius: 150px;
+    background-image: url("../assets/orientation_indicator.png");
+    background-size: cover;
+    background-color: cyan;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.rocket-image{
+    max-height: 90%;
+}
+
+.pitch-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}

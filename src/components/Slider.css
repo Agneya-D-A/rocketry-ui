@@ -1,0 +1,15 @@
+.slider{
+    border-radius: 25px;
+    width: 70px;
+    display: flex;
+    background-color: black;
+}
+
+.slider-button{
+    border-radius: 25px;
+    height:30px;
+    width: 30px;
+    background-color: white;
+}
+
+

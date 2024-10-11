@@ -1,0 +1,24 @@
+.coordinate-yaw-circle{
+    height: 200px;
+    width: 200px;
+    border-radius: 150px;
+    background-image: url("../assets/orientation_indicator.png");
+    background-size: cover;
+    background-color: greenyellow;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.rocket-image{
+    max-height: 90%;
+}
+
+.yaw-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,13 @@
+.graph{
+    max-width: 600px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+    
+}
+
+.graph-bottom-text{
+    color: white;
+}
