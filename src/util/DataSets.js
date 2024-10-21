@@ -92,3 +92,15 @@ export function TemperatureDataset(){
         }
     ]
 }
+
+export function PressureDataset(){
+    return [
+        {
+            label: 'Pressure(Pa)',
+            data: linked_list.map((node)=>node.pressure),
+            borderColor: 'red',
+            tension: 0.4,
+            fill: false
+        }
+    ]
+}
