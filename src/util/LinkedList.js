@@ -25,6 +25,7 @@ class Node{
         
         this.altitude = object.altitude;
         this.temperature = object.temperature;
+        this.pressure = object.pressure;
         this.timeStamp = object.timeStamp;
         this.timeMilliSeconds = object.timeMilliSeconds;
         this.next = null;
