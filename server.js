@@ -94,6 +94,7 @@ const handleSerialData = () =>{
             },
             altitude: serialArray[6],
             temperature: serialArray[7],
+            pressure: serialArray[8],
             timeStamp: time,
             timeMilliSeconds: timeMilliSeconds
         }
