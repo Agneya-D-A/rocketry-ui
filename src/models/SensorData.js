@@ -21,6 +21,7 @@ const sensorDataSchema = new mongoose.Schema({
     },
     altitude: { type: Number, required: true },
     temperature: { type: Number, required: true },
+    pressure: { type: Number, required: true },
     timestamp: { type: Date, default: Date.now },
     timeMilliSeconds: { type: Number, required: true}
 });
