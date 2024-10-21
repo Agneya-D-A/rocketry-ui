@@ -54,6 +54,7 @@ const App = () =>{
           <Graph linked_list={linked_list} purpose='acceleration'/>
           <Graph linked_list={linked_list} purpose='altitude'/>
           <Graph linked_list={linked_list} purpose='temperature'/>
+          <Graph linked_list={linked_list} purpose='pressure'/>
         </div>
         <div className='rotation-container'>
           <Yaw linked_list={linked_list}/>

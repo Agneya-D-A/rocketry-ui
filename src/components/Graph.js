@@ -194,7 +194,10 @@ export default function Graph({linked_list, purpose}){
         }
     }
     return (
-        <div className= {`graph ${theme}`}>
+        <div className= {`graph ${theme}`} style={purpose=='pressure'?{
+                justifySelf: 'center',
+                gridColumn: "1/span 2"
+            }: null}>
             {linked_list.length!==0 
             && [
                 <Line data={data} options={options} ></Line>,
