@@ -129,6 +129,16 @@ export default function Graph({linked_list, purpose}){
                         fill: false
                     }
                 ]
+            :purpose === 'pressure'?
+                [
+                    {
+                        label: 'Pressure(Pa)',
+                        data: linked_list.map((node)=>node.pressure),
+                        borderColor: 'red',
+                        tension: 0.4,
+                        fill: false
+                    }
+                ]
             : []
     }
 
@@ -193,6 +203,8 @@ export default function Graph({linked_list, purpose}){
                     :purpose ==='acceleration'? `${linked_list.tail.acceleration.A} m/s^2`
                     :purpose==='altitude'? `${linked_list.tail.altitude} m`
                     :purpose==='temperature'? `${linked_list.tail.temperature} deg C`
+                    :purpose==='pressure'? `${linked_list.tail.pressure} Pa`
+
                     :""
                 }</h3>
                 ]
