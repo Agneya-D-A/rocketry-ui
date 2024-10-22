@@ -1,0 +1,18 @@
+.action-buttons{
+    height: 50px;
+    width: 50px;
+    background-color: transparent;
+    border-radius: 30px;
+    padding: 0%;
+}
+
+.action-buttons img{
+    margin: 0%;
+    height: 100%;
+    width: 100%;
+    border-radius: 25px;
+}
+
+.action-button::selection{
+    box-shadow: inset 5px 5px grey;
+}

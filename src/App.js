@@ -1,4 +1,4 @@
-
+// import logo from './logo.svg';
 import './App.css';
 // import Graph from './graph';
 import { useState, useEffect, createContext } from 'react';
@@ -7,6 +7,9 @@ import io from 'socket.io-client'
 
 import Graph from "./components/Graph";
 import Slider from "./components/Slider";
+import Yaw from './components/Yaw';
+import Pitch from './components/Pitch';
+import Roll from './components/Roll';
 
 const ThemeContext = createContext();
 
@@ -51,6 +54,12 @@ const App = () =>{
           <Graph linked_list={linked_list} purpose='acceleration'/>
           <Graph linked_list={linked_list} purpose='altitude'/>
           <Graph linked_list={linked_list} purpose='temperature'/>
+          <Graph linked_list={linked_list} purpose='pressure'/>
+        </div>
+        <div className='rotation-container'>
+          <Yaw linked_list={linked_list}/>
+          <Pitch linked_list={linked_list}/>
+          <Roll linked_list={linked_list}/>
         </div>
       </div>
     </ThemeContext.Provider>

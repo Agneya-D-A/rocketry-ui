@@ -4,7 +4,6 @@ import { ThemeContext } from '../App';
 
 export default function Silder(){
     const {theme,setTheme} = useContext(ThemeContext);
-    //Flip theme from light to dark and vice versa
     const flipTheme = () =>{
         setTheme((prevTheme)=>{
             return prevTheme=="light"? "dark": "light";

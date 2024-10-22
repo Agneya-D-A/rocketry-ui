@@ -6,16 +6,8 @@ const frontendPath = "http://localhost:3000";
 const dbConnectionString = "mongodb://localhost:27017/rocketry-ui";
 const serialPortPath = "COM8/USB/VID_2341&PID_0043/14011";
 const baudRate = 9600;
-/*
-    For windows systems:
-    In order to find the serialPortPath, open the device manager, double click on the port through which
-    the arduino is connected to your computer. Go to the details tab. Select device instance path and copy
-    the line \USB\...
-    Copy that address. Now your serial port path starts with COMport/USB/....
-*/
 
-
-//This is required for cross origin request handling. 
+//This is required for some cross origin request handling. 
 //Request is denied if this isn't present
 const cors = require('cors');
 
@@ -119,6 +111,7 @@ const handleSerialData = (serialArray) =>{
         },
         altitude: serialArray[6],
         temperature: serialArray[7],
+        pressure: serialArray[8],
         timeStamp: time,
         timeMilliSeconds: timeMilliSeconds
     }
