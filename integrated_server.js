@@ -4,7 +4,7 @@
 //Initializing paths and variables. Change these according to your requirements
 const frontendPath = "http://localhost:3000";
 const dbConnectionString = "mongodb://localhost:27017/rocketry-ui";
-const serialPortPath = "COM8/USB/VID_2341&PID_0043/14011";
+const serialPortPath = "COM3/USB/VID_2341&PID_0043/14011";
 const baudRate = 9600;
 
 //This is required for some cross origin request handling. 
@@ -68,7 +68,7 @@ port.on('open', () => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-vectorMagnitude = (vector_x, vector_y, vector_z) =>{
+const vectorMagnitude = (vector_x, vector_y, vector_z) =>{
     //Does the vector addition of 3 components of a vector and returns its magnitude
     return Math.sqrt(Math.pow(vector_x,2)+Math.pow(vector_y,2)+Math.pow(vector_z,2));
 }
@@ -98,20 +98,25 @@ const handleSerialData = (serialArray) =>{
     const timeMilliSeconds = time.getTime() - executionStartTime.getTime();
     const node = {
         velocities: {
-            Vx: serialArray[0],
-            Vy: serialArray[1],
-            Vz: serialArray[2],
+            Vx: serialArray[0]/100,
+            Vy: serialArray[1]/100,
+            Vz: serialArray[2]/100,
             V: vectorMagnitude(serialArray[0],serialArray[1],serialArray[2]).toFixed(5) //rounds to 5 decimal places
         },
         acceleration: {
-            Ax: serialArray[3],
-            Ay: serialArray[4],
-            Az: serialArray[5],
+            Ax: serialArray[3]/100,
+            Ay: serialArray[4]/100,
+            Az: serialArray[5]/100,
             A: vectorMagnitude(serialArray[3],serialArray[4],serialArray[5]).toFixed(5)
         },
-        altitude: serialArray[6],
-        temperature: serialArray[7],
-        pressure: serialArray[8],
+        orientation: {
+            Ox: serialArray[6]/100,
+            Oy: serialArray[7]/100,
+            Oz: serialArray[8]/100,
+        },
+        altitude: serialArray[9],
+        temperature: serialArray[10]/100,
+        pressure: serialArray[11]/100,
         timeStamp: time,
         timeMilliSeconds: timeMilliSeconds
     }

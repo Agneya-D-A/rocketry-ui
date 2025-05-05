@@ -14,7 +14,7 @@ export default function Silder(){
             style={{justifyContent: theme=="light"? "flex-start": "flex-end"}}
             onClick={flipTheme}
         >
-            <div class={`slider-button`} ></div>
+            <div className={`slider-button`} ></div>
         </div>
     )
 }

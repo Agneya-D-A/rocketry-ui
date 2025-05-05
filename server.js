@@ -54,7 +54,7 @@ let insetionMatrix = [
 //used for traversing the above array. This mimics the first time, the second time and the third time we get data
 let index = 0;
 
-vectorMagnitude = (vector_x, vector_y, vector_z) =>{
+const vectorMagnitude = (vector_x, vector_y, vector_z) =>{
     //Does the vector addition of 3 components of a vector and returns its magnitude
     return Math.sqrt(Math.pow(vector_x,2)+Math.pow(vector_y,2)+Math.pow(vector_z,2));
 }
