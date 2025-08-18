@@ -4,7 +4,7 @@
 //Initializing paths and variables. Change these according to your requirements
 const frontendPath = "http://localhost:3000";
 const dbConnectionString = "mongodb://localhost:27017/rocketry-ui";
-const serialPortPath = "COM8/USB/VID_2341&PID_0043/14011";
+const serialPortPath = "COM3/USB/VID_1A86&PID_7523/6&22A3D4F&0&2";
 const baudRate = 9600;
 
 //This is required for some cross origin request handling. 
@@ -68,7 +68,7 @@ port.on('open', () => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-vectorMagnitude = (vector_x, vector_y, vector_z) =>{
+let vectorMagnitude = (vector_x, vector_y, vector_z) =>{
     //Does the vector addition of 3 components of a vector and returns its magnitude
     return Math.sqrt(Math.pow(vector_x,2)+Math.pow(vector_y,2)+Math.pow(vector_z,2));
 }

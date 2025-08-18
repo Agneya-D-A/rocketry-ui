@@ -60,7 +60,7 @@ port.on('open', () => {
 
 const executionStartTime = new Date();
 
-vectorMagnitude = (x, y, z) => {
+const vectorMagnitude = (x, y, z) => {
   return Math.sqrt(x * x + y * y + z * z);
 };
 

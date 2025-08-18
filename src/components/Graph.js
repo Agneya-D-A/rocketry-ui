@@ -5,6 +5,7 @@ import React, {useContext} from 'react';
 import './Graph.css';
 import { Line } from 'react-chartjs-2';
 import { ThemeContext } from '../App';
+import { VelocityDataset, AccelerationDataset, PressureDataset, AltitudeDataset, TemperatureDataset } from '../util/DataSets';
 
 //import chart elements from chart.js
 import {
@@ -20,7 +21,6 @@ import {
     scales
 
 } from 'chart.js';
-import { color } from 'chart.js/helpers';
 
 //register the imported elements with the chart
 ChartJS.register(
@@ -47,98 +47,15 @@ export default function Graph({linked_list, purpose}){
         //ternary operator is used
         datasets: 
             purpose ==='velocity'? 
-                [
-                    {
-                        label: 'Vx (m/s)', //label for the legend
-                        data: linked_list.map((node)=>node.velocities.Vx), //array of values (Vx)
-                        borderColor: 'green', //Color of the line as well as point border
-                        tension: 0.4, //For smoother curves
-                        fill: false //If it was true, would have filled color below the line.
-                        //Since we have multiple lines, we don't want that
-                    },
-                    {
-                        label: 'Vy (m/s)',
-                        data: linked_list.map((node)=>node.velocities.Vy),
-                        borderColor: 'blue',
-                        tension: 0.4,
-                        fill: false
-                    },
-                    {
-                        label: 'Vz (m/s)',
-                        data: linked_list.map((node)=>node.velocities.Vz),
-                        borderColor: 'red',
-                        tension: 0.4,
-                        fill: false
-                    },
-                    {
-                        label: 'V (m/s)',
-                        data: linked_list.map((node)=>node.velocities.V),
-                        borderColor: 'yellow',
-                        tension: 0.4,
-                        fill: false
-                    },
-                ]
+                VelocityDataset(linked_list)
             :purpose ==='acceleration' ? 
-                [
-                    {
-                        label: 'Ax (m/s^2)',
-                        data: linked_list.map((node)=>node.acceleration.Ax),
-                        borderColor: 'green',
-                        tension: 0.4,
-                        fill: false
-                    },
-                    {
-                        label: 'Ay (m/s^2)',
-                        data: linked_list.map((node)=>node.acceleration.Ay),
-                        borderColor: 'blue',
-                        tension: 0.4,
-                        fill: false
-                    },
-                    {
-                        label: 'Az (m/s^2)',
-                        data: linked_list.map((node)=>node.acceleration.Az),
-                        borderColor: 'red',
-                        tension: 0.4,
-                        fill: false
-                    },
-                    {
-                        label: 'A (m/s^2)',
-                        data: linked_list.map((node)=>node.acceleration.A),
-                        borderColor: 'yellow',
-                        tension: 0.4,
-                        fill: false
-                    }
-                ]
+                AccelerationDataset(linked_list)
             :purpose==='altitude'?
-                [
-                    {
-                        label: 'Altitude (m)',
-                        data: linked_list.map((node)=>node.altitude),
-                        borderColor: 'violet',
-                        tension: 0.4,
-                        fill: false
-                    }
-                ]
+                AltitudeDataset(linked_list)
             :purpose === 'temperature'?
-                [
-                    {
-                        label: 'Temperature (deg C)',
-                        data: linked_list.map((node)=>node.temperature),
-                        borderColor: 'orange',
-                        tension: 0.4,
-                        fill: false
-                    }
-                ]
+                TemperatureDataset(linked_list)
             :purpose === 'pressure'?
-                [
-                    {
-                        label: 'Pressure(Pa)',
-                        data: linked_list.map((node)=>node.pressure),
-                        borderColor: 'red',
-                        tension: 0.4,
-                        fill: false
-                    }
-                ]
+                PressureDataset(linked_list)
             : []
     }
 
@@ -156,19 +73,19 @@ export default function Graph({linked_list, purpose}){
                 title: { //Title in the x - axis
                     display: true,
                     text: 'Time (milliseconds)',
-                    color: theme=="dark" ? '#AAAAAA' : "#222222"
+                    color: theme==="dark" ? '#AAAAAA' : "#222222"
 
                 },
                 beginAtZero: true,  // Start the x-axis at 0
 
                 ticks: {
-                    color: theme=="dark" ? 'white' : 'black', // X-axis tick labels color
+                    color: theme==="dark" ? 'white' : 'black', // X-axis tick labels color
                 },
                 grid: {
-                    color: theme=="dark"? 'rgba(255, 255, 255, 0.2)' : 'rgba(2, 2, 2, 0.2)', // X-axis grid line color
+                    color: theme==="dark"? 'rgba(255, 255, 255, 0.2)' : 'rgba(2, 2, 2, 0.2)', // X-axis grid line color
                 },
                 border: {
-                    color: theme=="dark" ? 'white' : "light", // X-axis line color
+                    color: theme==="dark" ? 'white' : "light", // X-axis line color
                 },
             },
             y: {
@@ -182,13 +99,13 @@ export default function Graph({linked_list, purpose}){
                 },
                 beginAtZero: true,  // Start the y-axis at 0
                 ticks: {
-                    color: theme=="dark" ? 'white' : 'black', // y-axis tick labels color
+                    color: theme==="dark" ? 'white' : 'black', // y-axis tick labels color
                 },
                 grid: {
-                    color: theme=="dark"? 'rgba(255, 255, 255, 0.2)' : 'rgba(2, 2, 2, 0.2)', // X-axis grid line color
+                    color: theme==="dark"? 'rgba(255, 255, 255, 0.2)' : 'rgba(2, 2, 2, 0.2)', // X-axis grid line color
                 },
                 border: {
-                    color: theme=="dark" ? 'white' : 'black', // y-axis line color
+                    color: theme==="dark" ? 'white' : 'black', // y-axis line color
                 },
             }
         }
@@ -215,16 +132,3 @@ export default function Graph({linked_list, purpose}){
         </div>
     )
 }
-
-/*
-
-Conditional rendering is used here.
-In order to handle the first condirion where we have received no data from the graph,
-we check if the length of the linked list is 0. If it is, the Line component is not rendered
-Since there is no data, it would have thrown an error. This is done to avoid such errors
-Here, && is used for conditional rendering. It is a concept in javascript where, it keeps on checking the values
-one by one. If a value is false, it returns false. Else, it returns the last truthy value,
-in our case, the component we want
-Again a ternary operator is used for the contents of h3
-
-*/

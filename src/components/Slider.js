@@ -10,11 +10,11 @@ export default function Silder(){
         })
     };
     return (
-        <div class="slider" 
-            style={{justifyContent: theme=="light"? "flex-start": "flex-end"}}
+        <div className="slider" 
+            style={{justifyContent: theme==="light"? "flex-start": "flex-end"}}
             onClick={flipTheme}
         >
-            <div class={`slider-button`} ></div>
+            <div className={`slider-button`} ></div>
         </div>
     )
 }

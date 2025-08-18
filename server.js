@@ -1,5 +1,6 @@
 //import mongoose for MongoDB operations
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 
 
@@ -27,20 +28,28 @@ const io = require('socket.io')(server, {
     }
   });
 
-//Connect to MongoDB
-const SensorData = require('./src/models/SensorData');
-// const { timeStamp } = require('console');
-const connectToDatabsase = async () =>{
-  let connection_string = "mongodb://localhost:27017/rocketry-ui"
-  try {
-      await mongoose.connect(connection_string);
-      console.log('Connected to MongoDB via Mongoose!');
-  }
-  catch(error){
-      console.log('Error connecting to MongoDB:', error);
-  }
+// //Connect to MongoDB
+// const SensorData = require('./src/models/SensorData');
+// // const { timeStamp } = require('console');
+// const connectToDatabsase = async () =>{
+//   let connection_string = "mongodb://localhost:27017/rocketry-ui"
+//   try {
+//       await mongoose.connect(connection_string);
+//       console.log('Connected to MongoDB via Mongoose!');
+//   }
+//   catch(error){
+//       console.log('Error connecting to MongoDB:', error);
+//   }
+// }
+// connectToDatabsase();
+const csvFilePath = "sensor_data.csv";
+const HEADERS = ["Vx", "Vy", "Vz", "Ax", "Ay", "Az", "altitude", "temperature", "pressure"];
+const EXPECTED_COLUMNS = HEADERS.length;
+
+// Create CSV with headers if it doesn't exist
+if (!fs.existsSync(csvFilePath)) {
+  fs.writeFileSync(csvFilePath, [...HEADERS, "timeStamp", "timeMilliSeconds"].join(",") + "\n");
 }
-connectToDatabsase();
 
 //Example insertions
 //Just used an array of arrays to mimic the array we are going to obtain after splitting the serial string
@@ -54,7 +63,7 @@ let insetionMatrix = [
 //used for traversing the above array. This mimics the first time, the second time and the third time we get data
 let index = 0;
 
-vectorMagnitude = (vector_x, vector_y, vector_z) =>{
+const vectorMagnitude = (vector_x, vector_y, vector_z) =>{
     //Does the vector addition of 3 components of a vector and returns its magnitude
     return Math.sqrt(Math.pow(vector_x,2)+Math.pow(vector_y,2)+Math.pow(vector_z,2));
 }
@@ -65,13 +74,8 @@ let executionStartTime = new Date();
 let timerFunction = setInterval(()=>handleSerialData(), 3000);
 
 const handleSerialData = () =>{
-    if(index==insetionMatrix.length){
-        //stops the function from looping
-        clearInterval(timerFunction);
-        index = 0;
-    }
-    else{
-        const serialArray = insetionMatrix[index++];
+        const serialArray = insetionMatrix[index];
+        index = (index + 1)%4;
         const time = new Date();
         const timeMilliSeconds = time.getTime() - executionStartTime.getTime();
         const node = {
@@ -99,12 +103,24 @@ const handleSerialData = () =>{
             timeMilliSeconds: timeMilliSeconds
         }
 
-        const point = new SensorData({ ...node });
-        point.save();
+        // CSV logging logic
+          try {
+            let values = serialArray
+        
+            const timestamp = new Date().toLocaleTimeString();
+            const timeMilliSeconds = Date.now();
+            const csvLine = `${values.join(",")},${timestamp},${timeMilliSeconds}\n`;
+        
+            fs.appendFile(csvFilePath, csvLine, (err) => {
+              if (err) console.error("CSV Logging Error:", err);
+            });
+        
+          } catch (err) {
+            console.error("Error processing data for CSV:", err);
+          }
 
         io.emit('new-data',JSON.stringify(node));
         console.log(node);
-    }
 }
 
 //calls the handleSerialData function once every 3000 milliseconds. Just for testing
