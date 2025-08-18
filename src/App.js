@@ -10,11 +10,13 @@ import Slider from "./components/Slider";
 import Yaw from './components/Yaw';
 import Pitch from './components/Pitch';
 import Roll from './components/Roll';
+import Gps from './components/Gps';
+import Trajectory from './components/Trajectory';
 
 const ThemeContext = createContext();
 
 const App = () =>{
-  const [linked_list, updateList] = useState(new LinkedList(Infinity));
+  const [linked_list, updateList] = useState(new LinkedList(Number.MAX_SAFE_INTEGER));
   const [theme, setTheme] = useState("dark");
 
   useEffect(()=>{
@@ -47,11 +49,14 @@ const App = () =>{
           <Graph linked_list={linked_list} purpose='altitude'/>
           <Graph linked_list={linked_list} purpose='temperature'/>
           <Graph linked_list={linked_list} purpose='pressure'/>
-          
           <Yaw linked_list={linked_list}/>
           <Pitch linked_list={linked_list}/>
           <Roll linked_list={linked_list}/>
         </div>
+        <diiv className="position-container">
+          <Gps/>
+          <Trajectory/>
+        </diiv>
       </div>
     </ThemeContext.Provider>
   )
