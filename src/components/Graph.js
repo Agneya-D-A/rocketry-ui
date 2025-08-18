@@ -21,6 +21,7 @@ import {
     scales
 
 } from 'chart.js';
+import { fontString } from 'chart.js/helpers';
 
 //register the imported elements with the chart
 ChartJS.register(
@@ -37,6 +38,7 @@ ChartJS.register(
 
 //Something funny was happening with legend colors. I resorted to set the color I want as default
 ChartJS.defaults.color = '#AAA'; 
+ChartJS.defaults.font.size = "8em";
 
 export default function Graph({linked_list, purpose}){
     const {theme, setTheme} = useContext(ThemeContext);
@@ -63,9 +65,14 @@ export default function Graph({linked_list, purpose}){
         //options parameter for the Line component
         responsive: true,
         maintainAspectRatio: false, //when the graph is responsive, it acts funny if this isn't set to false
+
         plugins: {
             legend: {
-                color: "black"
+                color: "black",
+                labels: {
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                }
             }
         },
         scales: {
@@ -111,10 +118,7 @@ export default function Graph({linked_list, purpose}){
         }
     }
     return (
-        <div className= {`graph ${theme}`} style={purpose=='pressure'?{
-                justifySelf: 'center',
-                gridColumn: "1/span 2"
-            }: null}>
+        <div className= {`graph ${theme}`}>
             {linked_list.length!==0 
             && [
                 <Line data={data} options={options} ></Line>,

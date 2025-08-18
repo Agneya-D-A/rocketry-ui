@@ -14,7 +14,7 @@ import Roll from './components/Roll';
 const ThemeContext = createContext();
 
 const App = () =>{
-  const [linked_list, updateList] = useState(new LinkedList(10));
+  const [linked_list, updateList] = useState(new LinkedList(Infinity));
   const [theme, setTheme] = useState("dark");
 
   useEffect(()=>{
@@ -41,22 +41,13 @@ const App = () =>{
   return(
     <ThemeContext.Provider value={{theme,setTheme}}>
       <div className={`App ${theme}`}>
-        <div className='navbar'>
-          <h1 style={{gridColumn: "1/span 2"}}>Live Sensor Data</h1>
-          <div className='slider-container'>
-            <h3 className={`${theme}`}>Light</h3>
-            <Slider/>
-            <h3 className={`${theme}`}>Dark</h3>
-          </div>
-        </div>
         <div className='graph-container'>
           <Graph linked_list={linked_list} purpose='velocity'/>
           <Graph linked_list={linked_list} purpose='acceleration'/>
           <Graph linked_list={linked_list} purpose='altitude'/>
           <Graph linked_list={linked_list} purpose='temperature'/>
           <Graph linked_list={linked_list} purpose='pressure'/>
-        </div>
-        <div className='rotation-container'>
+          
           <Yaw linked_list={linked_list}/>
           <Pitch linked_list={linked_list}/>
           <Roll linked_list={linked_list}/>
@@ -69,3 +60,12 @@ const App = () =>{
 export default App;
 
 export {ThemeContext};
+
+{/* <div className='navbar'>
+          <h1 style={{gridColumn: "1/span 2"}}>Live Sensor Data</h1>
+          <div className='slider-container'>
+            <h3 className={`${theme}`}>Light</h3>
+            <Slider/>
+            <h3 className={`${theme}`}>Dark</h3>
+          </div>
+        </div> */}

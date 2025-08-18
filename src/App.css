@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  padding: 30px;
+  padding: 2vw;
   padding-top: 0px;
   /* max-height: 100vh; */
   background-color: #282c34;
@@ -68,11 +68,11 @@
   }
 }
 
-.navbar{
+/* .navbar{
   display: grid;
   grid-template-columns: auto auto auto;
   align-items: center;
-}
+} */
 
 .date-display{
   color: white;
@@ -86,15 +86,18 @@
 
 .graph-container{
   display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: 300px 300px 300px;
-  column-gap: 30px;
-  row-gap: 20px;
-  padding-left: 30px;
-  padding-top: 20px;
+  min-width: 80vw;
+  grid-template-columns: 23vw 23vw 23vw 23vw ;
+  grid-template-rows: 25vh 25vh;
+  font-size: 0.6em;
+  column-gap: 2vw;
+  row-gap: 4vh;
+  padding-top: 3vh;
+  border: 1px solid red;
+  padding-bottom: 3vh;
 }
 
-.slider-container{
+/* .slider-container{
   display: flex;
   gap: 10px;
   align-items: center;
@@ -102,8 +105,8 @@
 
 .rotation-container{
   display: grid;
-  grid-template-columns: auto auto auto;
-  grid-template-rows: 300px;
-  column-gap: 30px;
+  grid-template-columns: 50vw 50vw;
+  grid-template-rows: 40vh;
+  column-gap: 2vw;
   padding-inline: 10px;
-}
+} */
