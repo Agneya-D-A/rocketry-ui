@@ -1,5 +1,6 @@
 {
   "name": "rocketry-ui",
+  "main": "public/main.js",
   "proxy": "http://localhost:3001",
   "version": "0.1.0",
   "private": true,
@@ -12,6 +13,7 @@
     "chart.js": "^4.4.4",
     "concurrently": "^9.2.0",
     "cors": "^2.8.5",
+    "cross-env": "^10.0.0",
     "mongodb": "^6.8.1",
     "mongoose": "^8.6.1",
     "react": "^18.3.1",
@@ -30,10 +32,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "start-electron": "wait-on http://localhost:3000 && electron .",
     "start-server-test": "wait-on http://localhost:3000 && node server.js",
     "start-server": "wait-on http://localhost:3000 && node integrated_server.js",
-    "rocket-test": "concurrently \"npm start\" \"npm run start-server-test\"",
-    "rocket-prod": "concurrently \"npm start\" \"npm run start-server\""
+    "rocket-test": "concurrently \"cross-env BROWSER=none npm start\" \"npm run start-server-test\" \"npm run start-electron \"",
+    "rocket-prod": "concurrently \"cross-env BROWSER=none npm start\" \"npm run start-server\" \"npm run start-electron \""
   },
   "eslintConfig": {
     "extends": [
@@ -52,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^37.3.0"
   }
 }
