@@ -1,5 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
+import 'leaflet/dist/leaflet.css';
+
 // import Graph from './graph';
 import { useState, useEffect, createContext } from 'react';
 import { LinkedList, Node } from './util/LinkedList';

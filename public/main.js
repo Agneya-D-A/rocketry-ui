@@ -1,4 +1,4 @@
-const {app, BrowserWindow, screen} = require('electron');
+const {app, BrowserWindow, screen, session} = require('electron');
 
 let wind;
 
@@ -23,6 +23,13 @@ function createWindow(){
 }
 
 app.on('ready',()=>{
+     session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
+    if (permission === 'geolocation') {
+      callback(true); // Allow geolocation
+    } else {
+      callback(false);
+    }
+  });
     createWindow();
 })
 
