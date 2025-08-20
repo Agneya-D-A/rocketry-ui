@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap} from "react-leaflet";
 import L from 'leaflet';
 import customMarker from '../assets/rocket.png';
 
-const Gps = () =>{
+const Gps = ({linked_list}) =>{
     const [centre, setCentre] = useState([12.938208653033508, 77.56303455693195]);
     const [fetchedCentre, setFetchedCentre] = useState(true);
     let currentLocation = [12.93623206646275, 77.56159055086273];
@@ -37,7 +37,7 @@ const Gps = () =>{
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; OpenStreetMap contributors"
                 />
-                <Marker position={currentLocation} icon={myIcon}>
+                <Marker position={linked_list.tail? [linked_list.tail.position.x , linked_list.tail.position.y]: currentLocation} icon={myIcon}>
                     <Popup>NAF-2</Popup>
                 </Marker>
             </MapContainer>

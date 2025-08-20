@@ -56,7 +56,7 @@ const App = () =>{
           <Roll linked_list={linked_list}/>
         </div>
         <diiv className="position-container">
-          <Gps/>
+          <Gps linked_list={linked_list}/>
           <Trajectory/>
         </diiv>
       </div>
