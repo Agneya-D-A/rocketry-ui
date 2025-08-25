@@ -44,7 +44,7 @@ const io = require('socket.io')(server, {
 // }
 // connectToDatabsase();
 const csvFilePath = process.env.CSV_FILE_PATH;
-const HEADERS = ["Vx", "Vy", "Vz","V", "Ax", "Ay", "Az","A", "altitude", "temperature", "pressure","Ox","Oy","Oz","timeStamp", "timeMilliSeconds","positionX","positionY","distanceTraversed"];
+const HEADERS = ["Vx", "Vy", "Vz","V", "Ax", "Ay", "Az","A", "altitude", "temperature", "pressure","Pitch","Oy","Oz","timeStamp", "timeMilliSeconds","positionX","positionY","distanceTraversed"];
 const EXPECTED_COLUMNS = HEADERS.length;
 
 // Create CSV with headers if it doesn't exist
@@ -58,7 +58,8 @@ let insetionMatrix = [
     [1, 2, 3, 4, 5, 6, 100, 25,0,45,10,120],
     [0, -1, 2, 0, 0, 0, 200, 24,10,-30,-20,122],
     [3, 1, 0, -2, 1, 4, 150, 23,-30,180,50,145],
-    [2, 2, 2, 2, 2, 2, 180, 22,180,28.9,-160,260]
+    [2, 2, 2, 2, 2, 2, 180, 22,180,28.9,-160,260],
+    [2, 5, 6, 7, 8, 9, 130, 22,180,28.9,-169,263]
 ];
 
 //used for traversing the above array. This mimics the first time, the second time and the third time we get data
@@ -76,9 +77,12 @@ let positions = [REACT_APP_CENTRE_X,REACT_APP_CENTRE_Y];
 let timerFunction = setInterval(()=>handleSerialData(), 3000);
 
 const handleSerialData = () =>{
-        const serialArray = insetionMatrix[index];
-        serialArray.push(...positions);
-        index = (index + 1)%4;
+        let serialArray = [...insetionMatrix[index]];
+        serialArray.push(positions[0]);
+        serialArray.push(positions[1]);
+        positions[0] = positions[0] + 0.5;
+        positions[1] = positions[1] + 0.5;
+        index = (index + 1)%5;
         const time = new Date();
         const timeMilliSeconds = time.getTime() - executionStartTime.getTime();
         const node = {
@@ -110,8 +114,8 @@ const handleSerialData = () =>{
               distance: Math.sqrt((serialArray[12]- REACT_APP_CENTRE_X)**2 + (serialArray[13]- REACT_APP_CENTRE_Y)**2)
             }
         }
-        console.log(REACT_APP_CENTRE_X);
-        console.log(REACT_APP_CENTRE_Y);
+        console.log(serialArray[12]);
+        console.log(serialArray[13]);
         console.log(positions);
 
         // CSV logging logic
@@ -136,8 +140,7 @@ const handleSerialData = () =>{
 
         io.emit('new-data',JSON.stringify(node));
         console.log(node);
-        positions[0] += 12;
-        positions[1] += 15;
+        
 }
 
 

@@ -96,7 +96,7 @@ function Trajectory({ linked_list }) {
 
   return (
     <div className="bottom-box">
-      <Line ref={chartRef} data={chartData} options={options} />
+      <Line ref={chartRef} data={chartData} options={options} style={{minWidth: '100%'}}/>
     </div>
   );
 }
