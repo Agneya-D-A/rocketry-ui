@@ -1,5 +1,5 @@
 import React from "react";
-import Rocket from "../assets/rocket.png";
+import Rocket from "../assets/naf2.png";
 import "./Yaw.css"
 
  export default function Yaw({linked_list}){

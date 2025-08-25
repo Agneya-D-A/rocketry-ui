@@ -2,7 +2,7 @@ import {React, useState, useEffect} from "react";
 import "./PositionBox.css"
 import { MapContainer, TileLayer, Marker, Popup, useMap} from "react-leaflet";
 import L from 'leaflet';
-import customMarker from '../assets/rocket.png';
+import customMarker from '../assets/naf2.png';
 
 const Gps = ({linked_list}) =>{
     const [centre, setCentre] = useState([12.938208653033508, 77.56303455693195]);
