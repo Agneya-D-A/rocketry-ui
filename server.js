@@ -44,7 +44,7 @@ const io = require('socket.io')(server, {
 // }
 // connectToDatabsase();
 const csvFilePath = process.env.CSV_FILE_PATH;
-const HEADERS = ["Vx", "Vy", "Vz","V", "Ax", "Ay", "Az","A", "altitude", "temperature", "pressure","Pitch","Oy","Oz","timeStamp", "timeMilliSeconds","positionX","positionY","distanceTraversed"];
+const HEADERS = ["Vx", "Vy", "Vz","V", "Ax", "Ay", "Az","A", "altitude", "temperature", "pressure","pitch","yaw","roll","timeStamp", "timeMilliSeconds","positionX","positionY","distanceTraversed"];
 const EXPECTED_COLUMNS = HEADERS.length;
 
 // Create CSV with headers if it doesn't exist

@@ -20,7 +20,7 @@ const cors = require('cors');
 
 //Setup CSV Logging
 const csvFilePath = process.env.CSV_FILE_PATH;
-const HEADERS = ["Vx", "Vy", "Vz","V", "Ax", "Ay", "Az","A", "altitude", "temperature", "pressure","Ox","Oy","Oz","timeStamp", "timeMilliSeconds","positionX","positionY","distanceTraversed"];
+const HEADERS = ["Vx", "Vy", "Vz","V", "Ax", "Ay", "Az","A", "altitude", "temperature", "pressure","pitch","yaw","roll","timeStamp", "timeMilliSeconds","positionX","positionY","distanceTraversed"];
 const EXPECTED_COLUMNS = HEADERS.length;
 
 if (!fs.existsSync(csvFilePath)) {
