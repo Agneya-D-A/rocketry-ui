@@ -2,11 +2,15 @@
 //AFTER SUCCESSFUL TESTING, ONLY THE VARIABLES WOULD BE INCREASED, THE LOGIC WOULD REMAIN THE SAME
 
 //Initializing paths and variables. Change these according to your requirements
-const serialPortPath = process.env.SERIAL_PORT_PATH;
+require('dotenv').config();
+let serialPortPath = process.env.SERIAL_PORT_PATH;
+if(!serialPortPath)
+    serialPortPath = "COM5";
 const baudRate = parseInt(process.env.BAUD_RATE);
+
 const frontendPath = process.env.FRONTEND_PATH;
 const fs = require('fs');
-require('dotenv').config();
+
 const REACT_APP_CENTRE_X = parseFloat(process.env.REACT_APP_CENTRE_X);
 const REACT_APP_CENTRE_Y = parseFloat(process.env.REACT_APP_CENTRE_Y);
 
@@ -69,8 +73,9 @@ const io = require('socket.io')(server, {
 
 //Setup serial data reader
 const { SerialPort, ReadlineParser } = require('serialport');
+const { time } = require('console');
 //edit according to os
-const port = new SerialPort({ path: serialPortPath, baudRate: baudRate });
+const port = new SerialPort({path: serialPortPath, baudRate: baudRate });
 const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 
 //To notify when the port has been opened
@@ -91,10 +96,16 @@ let vectorMagnitude = (vector_x, vector_y, vector_z) =>{
 //handleSerial function is called on the serialArray
 parser.on('data',(data)=>{
     //Split the string into an array of strings. The separation occurs by taking a comma as the divider
-    const stringArray = data.split(",");
+    const stringArray = data.trim().split(",");
     // String array is converted to a Float array by converting each value to float
-    let serialArray = stringArray.map((value)=> parseFloat(value));
-    handleSerialData(serialArray);
+    if(stringArray.length <= 2){
+        stringArray.push( new Date().toLocaleTimeString())
+        console.log(stringArray);
+    }
+    else{
+        let serialArray = stringArray.map((value)=> parseFloat(value));
+        handleSerialData(serialArray);
+    }
 });
 
 //create a reference time
@@ -137,7 +148,7 @@ const handleSerialData = (serialArray) =>{
             distance: Math.sqrt((serialArray[12]- REACT_APP_CENTRE_X)**2 + (serialArray[13]- REACT_APP_CENTRE_Y)**2)
         }
     }
-    //create a new databse model object using the node and spreading it
+    
     try {
         let values = serialArray.slice(0,3);
         values.push(node.velocities.V);

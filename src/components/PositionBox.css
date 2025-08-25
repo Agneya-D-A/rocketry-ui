@@ -1,6 +1,7 @@
 .bottom-box{
     min-height: 34vh;
     min-width: 45vw;
+    max-height: 34vh;
     border: 1px solid white;
     margin-bottom: 1vh;
     padding-bottom: 0.5vh;

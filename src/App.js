@@ -57,7 +57,7 @@ const App = () =>{
         </div>
         <diiv className="position-container">
           <Gps linked_list={linked_list}/>
-          <Trajectory/>
+          <Trajectory linked_list={linked_list}/>
         </diiv>
       </div>
     </ThemeContext.Provider>
