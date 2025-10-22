@@ -1,8 +1,11 @@
 {
   "name": "rocketry-ui",
-  "main": "public/main.js",
+  "main": "build/electron.js",
   "proxy": "http://localhost:3001",
   "version": "0.1.0",
+  "description": "Ground station telemetry and control software for a rocketry project.", 
+  "author": "Agneya D A <agneya181222da@gmail.com>",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@serialport/binding-mock": "^10.2.2",
@@ -32,15 +35,17 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
+    "postbuild": "copy public\\electron.js build\\electron.js",
     "start-electron": "wait-on http://localhost:3000 && electron .",
     "start-server-test": "wait-on http://localhost:3000 && node server.js",
     "start-server": "wait-on http://localhost:3000 && node integrated_server.js",
     "rocket-test": "concurrently \"cross-env BROWSER=none npm start\" \"npm run start-server-test\" \"npm run start-electron \"",
-    "rocket-prod": "concurrently \"cross-env BROWSER=none npm start\" \"npm run start-server\" \"npm run start-electron \""
+    "rocket-prod": "concurrently \"cross-env BROWSER=none npm start\" \"npm run start-server\" \"npm run start-electron \"",
+    "electron:build": "electron-builder"
   },
   "eslintConfig": {
     "extends": [
@@ -61,6 +66,9 @@
     ]
   },
   "devDependencies": {
-    "electron": "^37.3.0"
+    "electron": "^37.3.0",
+    "electron-builder": "^26.0.12",
+    "react-app-rewired": "^2.2.1",
+    "workbox-webpack-plugin": "^7.3.0"
   }
 }

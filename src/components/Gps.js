@@ -5,7 +5,7 @@ import L from 'leaflet';
 import customMarker from '../assets/naf2.png';
 
 const Gps = ({linked_list}) =>{
-    const [centre, setCentre] = useState([12.938208653033508, 77.56303455693195]);
+    const [centre, setCentre] = useState([window.LAT || 26.71959705196945, window.LON || 84.30396473221639]);
     const [fetchedCentre, setFetchedCentre] = useState(true);
     let currentLocation = [12.93623206646275, 77.56159055086273];
 
