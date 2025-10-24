@@ -1,7 +1,9 @@
 //import mongoose for MongoDB operations
 const mongoose = require('mongoose');
-
-
+const fs = require('fs');
+require('dotenv').config();
+const REACT_APP_CENTRE_X = parseFloat(process.env.REACT_APP_CENTRE_X);
+const REACT_APP_CENTRE_Y = parseFloat(process.env.REACT_APP_CENTRE_Y);
 
 //This is required for some cross origin request handling. 
 //I've no clue what it means but request is denied if this isn't present
@@ -27,28 +29,37 @@ const io = require('socket.io')(server, {
     }
   });
 
-//Connect to MongoDB
-const SensorData = require('./src/models/SensorData');
-// const { timeStamp } = require('console');
-const connectToDatabsase = async () =>{
-  let connection_string = "mongodb://localhost:27017/rocketry-ui"
-  try {
-      await mongoose.connect(connection_string);
-      console.log('Connected to MongoDB via Mongoose!');
-  }
-  catch(error){
-      console.log('Error connecting to MongoDB:', error);
-  }
+// //Connect to MongoDB
+// const SensorData = require('./src/models/SensorData');
+// // const { timeStamp } = require('console');
+// const connectToDatabsase = async () =>{
+//   let connection_string = "mongodb://localhost:27017/rocketry-ui"
+//   try {
+//       await mongoose.connect(connection_string);
+//       console.log('Connected to MongoDB via Mongoose!');
+//   }
+//   catch(error){
+//       console.log('Error connecting to MongoDB:', error);
+//   }
+// }
+// connectToDatabsase();
+const csvFilePath = process.env.CSV_FILE_PATH;
+const HEADERS = ["Vx", "Vy", "Vz","V", "Ax", "Ay", "Az","A", "altitude", "temperature", "pressure","pitch","yaw","roll","timeStamp", "timeMilliSeconds","positionX","positionY","distanceTraversed"];
+const EXPECTED_COLUMNS = HEADERS.length;
+
+// Create CSV with headers if it doesn't exist
+if (!fs.existsSync(csvFilePath)) {
+  fs.writeFileSync(csvFilePath, HEADERS.join(",") + "\n");
 }
-connectToDatabsase();
 
 //Example insertions
 //Just used an array of arrays to mimic the array we are going to obtain after splitting the serial string
 let insetionMatrix = [
-    [1, 2, 3, 4, 5, 6, 100, 25,0,45,10],
-    [0, -1, 2, 0, 0, 0, 200, 24,10,-30,-20],
-    [3, 1, 0, -2, 1, 4, 150, 23,-30,180,50],
-    [2, 2, 2, 2, 2, 2, 180, 22,180,28.9,-160]
+    [1, 2, 3, 4, 5, 6, 100, 25,0,45,10,120],
+    [0, -1, 2, 0, 0, 0, 200, 24,10,-30,-20,122],
+    [3, 1, 0, -2, 1, 4, 150, 23,-30,180,50,145],
+    [2, 2, 2, 2, 2, 2, 180, 22,180,28.9,-160,260],
+    [2, 5, 6, 7, 8, 9, 130, 22,180,28.9,-169,263]
 ];
 
 //used for traversing the above array. This mimics the first time, the second time and the third time we get data
@@ -62,16 +73,28 @@ const vectorMagnitude = (vector_x, vector_y, vector_z) =>{
 //handle serial data, create a new point on the database and send the node to the frontend.
 //The function below is just set to mimic getting actual data. This will be replaced with the actual function.
 let executionStartTime = new Date();
+let positions = [REACT_APP_CENTRE_Y,REACT_APP_CENTRE_X];
 let timerFunction = setInterval(()=>handleSerialData(), 3000);
 
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const toRad = (deg) => deg * Math.PI / 180;
+  const R = 6371000; // Earth radius in meters
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
 const handleSerialData = () =>{
-    if(index==insetionMatrix.length){
-        //stops the function from looping
-        clearInterval(timerFunction);
-        index = 0;
-    }
-    else{
-        const serialArray = insetionMatrix[index++];
+        let serialArray = [...insetionMatrix[index]];
+        serialArray.push(positions[0]);
+        serialArray.push(positions[1]);
+        positions[0] = positions[0] + 0.001;
+        positions[1] = positions[1] + 0.001;
+        index = (index + 1)%5;
         const time = new Date();
         const timeMilliSeconds = time.getTime() - executionStartTime.getTime();
         const node = {
@@ -87,27 +110,50 @@ const handleSerialData = () =>{
                 Az: serialArray[5],
                 A: parseFloat(vectorMagnitude(serialArray[3],serialArray[4],serialArray[5])).toFixed(5)
             },
-            orientation: {
-                Ox: serialArray[8],
-                Oy: serialArray[9],
-                Oz: serialArray[10]
-            },
             altitude: serialArray[6],
             temperature: serialArray[7],
             pressure: serialArray[8],
+            orientation: {
+                Ox: serialArray[9],
+                Oy: serialArray[10],
+                Oz: serialArray[11]
+            },
             timeStamp: time,
-            timeMilliSeconds: timeMilliSeconds
+            timeMilliSeconds: timeMilliSeconds,
+            position: {
+              x: serialArray[12],
+              y: serialArray[13],
+              distance: haversineDistance(REACT_APP_CENTRE_Y, REACT_APP_CENTRE_X,serialArray[12],serialArray[13])
+            }
         }
+        console.log(serialArray[12]);
+        console.log(serialArray[13]);
+        console.log(positions);
 
-        const point = new SensorData({ ...node });
-        point.save();
+        // CSV logging logic
+        try {
+          let values = serialArray.slice(0,3);
+          values.push(node.velocities.V);
+          values.push(serialArray.slice(3,6));
+          values.push(node.acceleration.A);
+          values.push(serialArray.slice(6,12));
+          values.push([time, timeMilliSeconds]);
+          values.push([node.position.x, node.position.y, node.position.distance]);
+          
+          const csvLine = `${values.join(",")}\n`;
+      
+          fs.appendFile(csvFilePath, csvLine, (err) => {
+            if (err) console.error("CSV Logging Error:", err);
+          });
+      
+        } catch (err) {
+          console.error("Error processing data for CSV:", err);
+        }
 
         io.emit('new-data',JSON.stringify(node));
         console.log(node);
-    }
+        
 }
-
-//calls the handleSerialData function once every 3000 milliseconds. Just for testing
 
 
 //Assigning which port the server looks for responses in

@@ -1,5 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
+import 'leaflet/dist/leaflet.css';
+
 // import Graph from './graph';
 import { useState, useEffect, createContext } from 'react';
 import { LinkedList, Node } from './util/LinkedList';
@@ -10,11 +12,13 @@ import Slider from "./components/Slider";
 import Yaw from './components/Yaw';
 import Pitch from './components/Pitch';
 import Roll from './components/Roll';
+import Gps from './components/Gps';
+import Trajectory from './components/Trajectory';
 
 const ThemeContext = createContext();
 
 const App = () =>{
-  const [linked_list, updateList] = useState(new LinkedList(10));
+  const [linked_list, updateList] = useState(new LinkedList(Number.MAX_SAFE_INTEGER));
   const [theme, setTheme] = useState("dark");
 
   useEffect(()=>{
@@ -41,26 +45,20 @@ const App = () =>{
   return(
     <ThemeContext.Provider value={{theme,setTheme}}>
       <div className={`App ${theme}`}>
-        <div className='navbar'>
-          <h1 style={{gridColumn: "1/span 2"}}>Live Sensor Data</h1>
-          <div className='slider-container'>
-            <h3 className={`${theme}`}>Light</h3>
-            <Slider/>
-            <h3 className={`${theme}`}>Dark</h3>
-          </div>
-        </div>
         <div className='graph-container'>
           <Graph linked_list={linked_list} purpose='velocity'/>
           <Graph linked_list={linked_list} purpose='acceleration'/>
           <Graph linked_list={linked_list} purpose='altitude'/>
           <Graph linked_list={linked_list} purpose='temperature'/>
           <Graph linked_list={linked_list} purpose='pressure'/>
-        </div>
-        <div className='rotation-container'>
           <Yaw linked_list={linked_list}/>
           <Pitch linked_list={linked_list}/>
           <Roll linked_list={linked_list}/>
         </div>
+        <diiv className="position-container">
+          <Gps linked_list={linked_list}/>
+          <Trajectory linked_list={linked_list}/>
+        </diiv>
       </div>
     </ThemeContext.Provider>
   )
@@ -69,3 +67,12 @@ const App = () =>{
 export default App;
 
 export {ThemeContext};
+
+{/* <div className='navbar'>
+          <h1 style={{gridColumn: "1/span 2"}}>Live Sensor Data</h1>
+          <div className='slider-container'>
+            <h3 className={`${theme}`}>Light</h3>
+            <Slider/>
+            <h3 className={`${theme}`}>Dark</h3>
+          </div>
+        </div> */}

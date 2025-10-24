@@ -28,6 +28,12 @@ class Node{
         this.pressure = object.pressure;
         this.timeStamp = object.timeStamp;
         this.timeMilliSeconds = object.timeMilliSeconds;
+
+        this.position = {
+            x: object.position.x,
+            y: object.position.y,
+            distanceTravelled: object.position.distance
+        };
         this.next = null;
     }
 
@@ -103,9 +109,9 @@ class LinkedList{
     }
 
     refreshPoints(node){
-        if(this.length===this.limit){
-            this.removeFromHead();
-        }
+        // if(this.length===this.limit){
+        //     this.removeFromHead();
+        // }
         this.insertAtTail(node);
     }
 }
