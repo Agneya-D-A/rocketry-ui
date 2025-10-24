@@ -5,9 +5,9 @@ import L from 'leaflet';
 import customMarker from '../assets/naf2.png';
 
 const Gps = ({linked_list}) =>{
-    const [centre, setCentre] = useState([window.LAT || 26.71959705196945, window.LON || 84.30396473221639]);
+    const [centre, setCentre] = useState([26.71959705196945, 84.30396473221639]);
     const [fetchedCentre, setFetchedCentre] = useState(true);
-    let currentLocation = [12.93623206646275, 77.56159055086273];
+    let currentLocation = [window.LAT || 26.71959705196945, window.LON || 84.30396473221639];
 
     const myIcon = new L.Icon({
         iconUrl: customMarker,
@@ -29,15 +29,23 @@ const Gps = ({linked_list}) =>{
     //         console.error("Error fetching location:", error);
     //     });
     // }, []);
+
+    useEffect(()=>{
+        if(window.LAT && window.LON){
+            setCentre([window.LAT, window.LON]);
+        }
+    },[]);
     
     return (
         <div className="bottom-box">{
             fetchedCentre && <MapContainer center={centre} zoom={16} style={{height: "100%", width:"100%"}}>
                 <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution="&copy; OpenStreetMap contributors"
+                    url="./map_tiles/{z}/{x}/{y}.png"
+                    minZoom={14}
+                    maxZoom={18}
+                    attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap contributors</a>"
                 />
-                <Marker position={linked_list.tail? [linked_list.tail.position.x , linked_list.tail.position.y]: currentLocation} icon={myIcon}>
+                <Marker position={linked_list.tail? [linked_list.tail.position.y , linked_list.tail.position.x]: currentLocation} icon={myIcon}>
                     <Popup>NAF-2</Popup>
                 </Marker>
             </MapContainer>

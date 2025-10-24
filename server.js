@@ -73,7 +73,7 @@ const vectorMagnitude = (vector_x, vector_y, vector_z) =>{
 //handle serial data, create a new point on the database and send the node to the frontend.
 //The function below is just set to mimic getting actual data. This will be replaced with the actual function.
 let executionStartTime = new Date();
-let positions = [REACT_APP_CENTRE_X,REACT_APP_CENTRE_Y];
+let positions = [REACT_APP_CENTRE_Y,REACT_APP_CENTRE_X];
 let timerFunction = setInterval(()=>handleSerialData(), 3000);
 
 function haversineDistance(lat1, lon1, lat2, lon2) {
@@ -92,8 +92,8 @@ const handleSerialData = () =>{
         let serialArray = [...insetionMatrix[index]];
         serialArray.push(positions[0]);
         serialArray.push(positions[1]);
-        positions[0] = positions[0] + 0.5;
-        positions[1] = positions[1] + 0.5;
+        positions[0] = positions[0] + 0.005;
+        positions[1] = positions[1] + 0.005;
         index = (index + 1)%5;
         const time = new Date();
         const timeMilliSeconds = time.getTime() - executionStartTime.getTime();

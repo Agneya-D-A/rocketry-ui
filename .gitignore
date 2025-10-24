@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /dist
+/public/map_tiles
 
 # testing
 /coverage
