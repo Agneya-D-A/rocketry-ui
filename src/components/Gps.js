@@ -41,11 +41,9 @@ const Gps = ({linked_list}) =>{
             fetchedCentre && <MapContainer center={centre} zoom={16} style={{height: "100%", width:"100%"}}>
                 <TileLayer
                     url="./map_tiles/{z}/{x}/{y}.png"
-                    minZoom={14}
-                    maxZoom={18}
                     attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap contributors</a>"
                 />
-                <Marker position={linked_list.tail? [linked_list.tail.position.y , linked_list.tail.position.x]: currentLocation} icon={myIcon}>
+                <Marker position={linked_list.tail? [linked_list.tail.position.x , linked_list.tail.position.y]: currentLocation} icon={myIcon}>
                     <Popup>NAF-2</Popup>
                 </Marker>
             </MapContainer>

@@ -7,6 +7,18 @@
   "author": "Agneya D A <agneya181222da@gmail.com>",
   "homepage": ".",
   "private": true,
+  "build": {
+    "appId": "com.rocketry-bmsce.rocketryui",  
+    "productName": "Rocketry UI",
+    "icon": "app_icon.png", 
+    "win": {
+      "icon": "app_icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    }
+  },
   "dependencies": {
     "@serialport/binding-mock": "^10.2.2",
     "@testing-library/jest-dom": "^5.17.0",
@@ -71,4 +83,5 @@
     "react-app-rewired": "^2.2.1",
     "workbox-webpack-plugin": "^7.3.0"
   }
+  
 }

@@ -92,8 +92,8 @@ const handleSerialData = () =>{
         let serialArray = [...insetionMatrix[index]];
         serialArray.push(positions[0]);
         serialArray.push(positions[1]);
-        positions[0] = positions[0] + 0.005;
-        positions[1] = positions[1] + 0.005;
+        positions[0] = positions[0] + 0.001;
+        positions[1] = positions[1] + 0.001;
         index = (index + 1)%5;
         const time = new Date();
         const timeMilliSeconds = time.getTime() - executionStartTime.getTime();
@@ -123,7 +123,7 @@ const handleSerialData = () =>{
             position: {
               x: serialArray[12],
               y: serialArray[13],
-              distance: haversineDistance(REACT_APP_CENTRE_X, REACT_APP_CENTRE_Y,serialArray[12],serialArray[13])
+              distance: haversineDistance(REACT_APP_CENTRE_Y, REACT_APP_CENTRE_X,serialArray[12],serialArray[13])
             }
         }
         console.log(serialArray[12]);
