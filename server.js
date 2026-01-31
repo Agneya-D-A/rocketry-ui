@@ -55,6 +55,16 @@ if (!fs.existsSync(csvFilePath)) {
 //Example insertions
 //Just used an array of arrays to mimic the array we are going to obtain after splitting the serial string
 let insetionMatrix = [
+    [0, 0.2, -0.1, 0, 0, 6, 0, 25,101789,0,0,0],
+    [0, 0.2, -0.1, 0, 0, 6, 0, 25,101789,0,0,0],
+    [0, 0.2, -0.1, 0, 0, 6, 0, 25,101789,0,0,0],
+    [0, 0.2, -0.1, 0, 0, 6, 0, 25,101789,0,0,0],
+    [0, 0.2, -0.1, 0, 0, 6, 0, 25,101789,0,0,0],
+    [0, 0.2, -0.1, 0, 0, 6, 0, 25,101789,0,0,0],
+    [7.3, 0.1, 0, 0, 0, 6, 210, 25,101765,0,0,0],
+    [10, 0.12, 0, 0, 0, 6, 873, 25,101741,0,0,0],
+    [25, -0.18, 0, 0, 0, 6, 0, 25,0,0,0,0],
+    [1, 2, 3, 4, 5, 6, 100, 25,0,45,10,120],
     [1, 2, 3, 4, 5, 6, 100, 25,0,45,10,120],
     [0, -1, 2, 0, 0, 0, 200, 24,10,-30,-20,122],
     [3, 1, 0, -2, 1, 4, 150, 23,-30,180,50,145],
@@ -74,7 +84,7 @@ const vectorMagnitude = (vector_x, vector_y, vector_z) =>{
 //The function below is just set to mimic getting actual data. This will be replaced with the actual function.
 let executionStartTime = new Date();
 let positions = [REACT_APP_CENTRE_Y,REACT_APP_CENTRE_X];
-let timerFunction = setInterval(()=>handleSerialData(), 3000);
+let timerFunction = setInterval(()=>handleSerialData(), 1470);
 
 function haversineDistance(lat1, lon1, lat2, lon2) {
   const toRad = (deg) => deg * Math.PI / 180;
@@ -92,8 +102,8 @@ const handleSerialData = () =>{
         let serialArray = [...insetionMatrix[index]];
         serialArray.push(positions[0]);
         serialArray.push(positions[1]);
-        positions[0] = positions[0] + 0.001;
-        positions[1] = positions[1] + 0.001;
+        positions[0] = positions[0] + 0.0001;
+        positions[1] = positions[1] + 0.0001;
         index = (index + 1)%5;
         const time = new Date();
         const timeMilliSeconds = time.getTime() - executionStartTime.getTime();

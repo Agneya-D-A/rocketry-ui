@@ -5,9 +5,9 @@ import L from 'leaflet';
 import customMarker from '../assets/naf2.png';
 
 const Gps = ({linked_list}) =>{
-    const [centre, setCentre] = useState([26.71959705196945, 84.30396473221639]);
+    const [centre, setCentre] = useState([12.7359867, 77.322453]);
     const [fetchedCentre, setFetchedCentre] = useState(true);
-    let currentLocation = [window.LAT || 26.71959705196945, window.LON || 84.30396473221639];
+    let currentLocation = [window.LAT || 12.7359867, window.LON || 77.322453];
 
     const myIcon = new L.Icon({
         iconUrl: customMarker,
@@ -40,7 +40,7 @@ const Gps = ({linked_list}) =>{
         <div className="bottom-box">{
             fetchedCentre && <MapContainer center={centre} zoom={16} style={{height: "100%", width:"100%"}}>
                 <TileLayer
-                    url="./map_tiles/{z}/{x}/{y}.png"
+                    url="./map_tiles/{z}/{x}/{y}.jpg"
                     attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap contributors</a>"
                 />
                 <Marker position={linked_list.tail? [linked_list.tail.position.x , linked_list.tail.position.y]: currentLocation} icon={myIcon}>

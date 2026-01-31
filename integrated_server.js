@@ -34,6 +34,10 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
   return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+function getRandomFloat(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 const vectorMagnitude = (vector_x, vector_y, vector_z) =>{
     //Does the vector addition of 3 components of a vector and returns its magnitude
     return Math.sqrt(Math.pow(vector_x,2)+Math.pow(vector_y,2)+Math.pow(vector_z,2));
@@ -43,45 +47,59 @@ let executionStartTime = new Date();
 
 parser.on('data', (data) => {
     const tempArray = data.trim().split(',');
-    if (tempArray.length <= 2) {
-    console.log(data); // Log the raw data if not enough fields
-    return;
+    console.log(data);
+    if (tempArray.length < 14) {
+        console.log(data); // Log the raw data if not enough fields
+        return;
     }
 
-    const serialArray = tempArray.map(parseFloat);
+    let serialArray;
+
+    try{
+        serialArray = tempArray.map(parseFloat);
+    }
+    catch(e){
+        console.log(tempArray);
+        return;
+    }
+    
 
 
-  const time = new Date();
-  const timeMilliSeconds = time.getTime() - executionStartTime.getTime();
+    const time = new Date();
+    const timeMilliSeconds = time.getTime() - executionStartTime.getTime();
+
+    // const ranx = getRandomFloat(0.03, 0.05).toFixed(5);
+    // const rany = getRandomFloat(0.03, 0.05).toFixed(5);
+    // const ranz = getRandomFloat(0.03, 0.05).toFixed(5);
 
     const node = {
-    velocities: {
-        Vx: serialArray[7],
-        Vy: serialArray[8],
-        Vz: serialArray[9],
-        V: parseFloat(vectorMagnitude(serialArray[7], serialArray[8], serialArray[9])).toFixed(5),
-    },
-    acceleration: {
-        Ax: serialArray[4],
-        Ay: serialArray[5],
-        Az: serialArray[6],
-        A: parseFloat(vectorMagnitude(serialArray[4], serialArray[5], serialArray[6])).toFixed(5),
-    },
-    altitude: serialArray[0],
-    temperature: serialArray[10],
-    pressure: serialArray[11],
-    orientation: {
-        Ox: serialArray[1], // pitch
-        Oy: serialArray[2], // roll
-        Oz: serialArray[3], // yaw
-    },
-    timeStamp: time,
-    timeMilliSeconds: timeMilliSeconds,
-    position: {
-        x: serialArray[13], // longitude
-        y: serialArray[12], // latitude
-        distance: haversineDistance(REACT_APP_CENTRE_Y, REACT_APP_CENTRE_X, serialArray[12], serialArray[13]),
-    },
+        velocities: {
+            Vx: serialArray[7],
+            Vy: serialArray[8],
+            Vz: serialArray[9],
+            V: parseFloat(vectorMagnitude(serialArray[7], serialArray[8], serialArray[9])).toFixed(5),
+        },
+        acceleration: {
+            Ax: serialArray[4],
+            Ay: serialArray[5],
+            Az: serialArray[6],
+            A: parseFloat(vectorMagnitude(serialArray[4], serialArray[5], serialArray[6])).toFixed(5),
+        },
+        altitude: serialArray[0],
+        temperature: serialArray[10],
+        pressure: serialArray[11],
+        orientation: {
+            Ox: serialArray[1], // pitch
+            Oy: serialArray[2], // roll
+            Oz: serialArray[3], // yaw
+        },
+        timeStamp: time,
+        timeMilliSeconds: timeMilliSeconds,
+        position: {
+            x: serialArray[12], // latitude
+            y: serialArray[13], // longitude
+            distance: haversineDistance(REACT_APP_CENTRE_Y, REACT_APP_CENTRE_X, serialArray[12], serialArray[13]),
+        }
     };
 
 
